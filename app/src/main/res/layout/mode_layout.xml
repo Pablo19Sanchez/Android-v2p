@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ScrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/welcome"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/background">
+
+        <TextView
+            android:id="@+id/ModeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="MODE"
+            android:textColor="#F7F5F3"
+            android:textSize="50sp" />
+
+        <LinearLayout
+            android:id="@+id/velocityLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/ModeTextView"
+            android:layout_marginBottom="-100dp"
+            android:adjustViewBounds="true"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/velocityTitle"
+                android:layout_width="148dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="Velocity"
+                android:textColor="@color/colorPrimary"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/velocityInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/positionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/velocityLayout"
+            android:layout_marginBottom="-42dp"
+            android:adjustViewBounds="true"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/positionTitle"
+                android:layout_width="148dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="Position"
+                android:textColor="@color/colorPrimary"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/positionInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@color/black"
+            android:layout_alignBottom="@+id/positionLayout"
+            android:layout_marginBottom="-10dp"/>
+
+        <LinearLayout
+            android:id="@+id/proximityLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/positionLayout"
+            android:layout_marginBottom="-55dp"
+            android:adjustViewBounds="true"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/proximityInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignBottom="@+id/positionLayout"
+                android:textColor="@color/colorAccent"
+                android:textSize="30sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/warningLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/proximityLayout"
+            android:layout_marginBottom="-42dp"
+            android:adjustViewBounds="true"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/warningInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignBottom="@+id/positionLayout"
+                android:textColor="@color/colorAccent"
+                android:textSize="30sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@android:color/black"
+            android:layout_alignBottom="@+id/warningLayout"
+            android:layout_marginBottom="-10dp"/>
+
+        <LinearLayout
+            android:id="@+id/messageLayout"
+            android:layout_width="match_parent"
+            android:layout_height="92dp"
+            android:layout_alignBottom="@+id/warningLayout"
+            android:layout_marginBottom="-105dp"
+            android:adjustViewBounds="true"
+            android:background="@color/green"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/messageTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignBottom="@+id/positionLayout"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:text="Messages sent today: "/>
+
+            <TextView
+                android:id="@+id/messageInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignBottom="@+id/positionLayout"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/messageLayout"
+            android:layout_marginBottom="-55dp"
+            android:adjustViewBounds="true"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/buttonTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="TEST BUTTON"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/InfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/buttonLayout"
+            android:layout_marginBottom="-170dp"
+            android:adjustViewBounds="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/kth_logo"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:orientation="horizontal"
+                android:src="@drawable/kth_logo"/>
+
+            <ImageView
+                android:id="@+id/kthLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:orientation="horizontal"
+                android:src="@drawable/credits"/>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

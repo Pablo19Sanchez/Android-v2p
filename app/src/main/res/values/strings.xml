@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">V2X Safety</string>
+    <string name="walking">WALKING</string>
+    <string name="running">RUNNING</string>
+    <string name="biking">BIKING</string>
+    <string name="title_location_activation">We need your location!</string>
+    <string name="text_location_activation">We need to determine your location to know the area you are. Without that info the application cannot work and it will be closed.</string>
+    <string name="title_location_permission">The APP needs access to the location</string>
+    <string name="text_location_permission">Without location permission the application cannot work and it will be closed.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="warning">WARNING</string>
+    <string name="checkRoad">Check Road</string>
+</resources>
