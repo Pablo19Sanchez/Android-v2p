@@ -17,17 +17,15 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+import android.os.RemoteException;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.v2x_safety.comm.LoginRegistrationAsyncTask;
 import com.example.v2x_safety.comm.SendDatagramAsyncTask;
@@ -35,11 +33,13 @@ import com.example.v2x_safety.comm.UDPClient;
 import com.example.v2x_safety.entity.MessageV2X;
 import com.example.v2x_safety.entity.decisionClass;
 
-import java.io.InputStream;
-import java.util.Random;
-import java.util.Timer;
+import org.altbeacon.beacon.*;
 
-public class modeActivity extends Activity implements SensorEventListener, LocationListener, GpsStatus.Listener, View.OnClickListener {
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Random;
+
+public class modeActivity extends Activity implements SensorEventListener, LocationListener, GpsStatus.Listener, View.OnClickListener, BeaconConsumer  {
 
     // Sensors Variables
     private SensorManager sensorManager;
@@ -76,6 +76,11 @@ public class modeActivity extends Activity implements SensorEventListener, Locat
     public static final int BYE = 1;
     private LoginRegistrationAsyncTask task;
     private Context context;
+    // Variables to receive beacons
+    private BeaconManager beaconManager;
+    private final String beaconUUID = "F0018B9B-7509-4C31-A905-1A27D39C003C"; // Change depending the UUID of the beacon use
+    private final String majorNumber = "225897"; // Major and minor number need to change depending the beacon
+    private final String minorNumber = "987512";
 
     // ACTIVITY METHODS
     @SuppressLint("HandlerLeak")
@@ -123,6 +128,11 @@ public class modeActivity extends Activity implements SensorEventListener, Locat
                 }
             }
         };
+        // Start BeaconManager
+        beaconManager = BeaconManager.getInstanceForApplication(this);
+            // BeaconParser - check library specifications to know which parser is needed depending the beacon used
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
+        beaconManager.bind(this);
         // Start listener button TEST
         (findViewById(R.id.buttonTest)).setOnClickListener(this);
     }
@@ -184,6 +194,7 @@ public class modeActivity extends Activity implements SensorEventListener, Locat
         sensorManager.unregisterListener(this, accelerometer);
         sensorManager.unregisterListener(this, prox);
         sensorManager.unregisterListener(this, light);
+        beaconManager.unbind(this);
         // Send message BYE
         InputStream keyin = this.getResources().openRawResource(R.raw.androidkey);
         Context context = getApplicationContext();
@@ -327,10 +338,63 @@ public class modeActivity extends Activity implements SensorEventListener, Locat
         }
     }
 
+    // METHOD TO OBTAIN BEACONS
+    @Override
+    public void onBeaconServiceConnect() {
+        final Region regionBeacon = new Region("myRegion", Identifier.parse(beaconUUID), null, null); // Major and minor numbers need to be specified depending beacon used
+        beaconManager.setMonitorNotifier(new MonitorNotifier() {
+            @Override
+            public void didEnterRegion(Region region) {
+                try {
+                    beaconManager.startRangingBeaconsInRegion(region);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void didExitRegion(Region region) {
+                try {
+                    beaconManager.stopRangingBeaconsInRegion(region);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void didDetermineStateForRegion(int i, Region region) { }
+        });
+
+        beaconManager.setRangeNotifier(new RangeNotifier() {
+            @Override
+            public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region) {
+                for(Beacon theBeacon : collection) {
+                    // First chech that the beacon is the correct one
+                    if(theBeacon.getId1().equals(Identifier.parse(beaconUUID)) && theBeacon.getId2().equals(Identifier.parse(majorNumber)) && theBeacon.getId3().equals(Identifier.parse(minorNumber))){
+                        // After that, we check that the distance is less than 5 meters
+                        if(theBeacon.getDistance() < 5){
+                            // Now, we can check the level of warning and send a message if needed
+                            warning = decision.levelWarning(acceleration, velocity, proxValue, lightValue);
+                            if(warning != 0){
+                                sendWarningMessage();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        try {
+            beaconManager.startMonitoringBeaconsInRegion(regionBeacon);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     // METHOD TO SEND UDP MESSAGES
     private void sendWarningMessage(){
         MessageV2X message = new MessageV2X("WARNING", sessionID, mode, warning, latitude, longitude, context, keyUser, iv);
         datagramAsyncTask = new SendDatagramAsyncTask(message, mHandler, udpClient);
         datagramAsyncTask.execute();
     }
+
 }

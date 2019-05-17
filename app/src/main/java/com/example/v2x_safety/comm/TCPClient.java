@@ -26,8 +26,8 @@ public class TCPClient {
     private MessageV2X message;
     private Context context;
 
-    //String ip = "192.168.1.200";
-    String ip = "130.229.138.84";
+    String ip = "192.168.1.200";
+    //String ip = "130.229.138.84";
     int port = 9999;
 
     private ServerAnswer listener = null;

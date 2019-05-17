@@ -14,8 +14,8 @@ import java.net.UnknownHostException;
 
 public class UDPClient {
 
-    //private final String ip = "192.168.1.200";
-    private final String ip = "130.229.138.84";
+    private final String ip = "192.168.1.200";
+    //private final String ip = "130.229.138.84";
     private final int port = 8888;
     private InetAddress serverAddr;
     private DatagramSocket udpSocket;
